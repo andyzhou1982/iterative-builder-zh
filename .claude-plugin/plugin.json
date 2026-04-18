@@ -1,0 +1,9 @@
+{
+  "name": "iterative-builder-zh",
+  "version": "1.0.0",
+  "description": "循序渐进构建生产级项目 - 从需求到分阶段实现的完整工作流",
+  "author": {
+    "name": "Claude User"
+  },
+  "keywords": ["project-builder", "iterative", "chinese", "staged-development"]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "iterative-builder-zh-marketplace",
+  "description": "循序渐进项目构建器插件",
+  "owner": {
+    "name": "Claude User",
+    "email": "user@example.com"
+  },
+  "plugins": [
+    {
+      "name": "iterative-builder-zh",
+      "description": "从需求文档循序渐进构建生产级项目。支持分阶段实现、会话恢复和 bug 修复",
+      "version": "1.0.0",
+      "source": "./",
+      "author": {
+        "name": "Claude User",
+        "email": "user@example.com"
+      }
+    }
+  ]
+}
