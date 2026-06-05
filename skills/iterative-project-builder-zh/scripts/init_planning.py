@@ -77,7 +77,7 @@ TASK_PLAN_TEMPLATE = '''# 任务计划: {project_name}
 
 ## 备注
 - 每个阶段必须独立可运行
-- 所有代码注释使用双语格式
+- 所有代码注释使用中文
 - 每个阶段后验证端到端功能
 '''
 
@@ -138,10 +138,9 @@ FINDINGS_TEMPLATE = '''# 研究发现与决策
 
 ## 实现模式
 
-### 双语注释格式
+### 中文注释格式
 ```python
-# English comment
-# 中文备注
+# 中文注释
 code here
 ```
 

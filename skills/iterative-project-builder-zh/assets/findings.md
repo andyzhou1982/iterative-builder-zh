@@ -60,10 +60,9 @@
 
 ## 实现模式
 
-### 双语注释格式
+### 中文注释格式
 ```python
-# English comment
-# 中文备注
+# 中文注释
 code here
 ```
 

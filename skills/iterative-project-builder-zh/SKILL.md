@@ -109,7 +109,7 @@ day1/
 - **最小但完整** - 核心流程端到端可用
 - **不偷工减料** - 正确的错误处理、验证
 - **清晰架构** - 可扩展的模式
-- **双语注释** - 见 [references/bilingual-comments.md](references/bilingual-comments.md)
+- **中文注释** - 代码注释统一使用中文
 
 ### 3.3 验证 Day 1
 ```bash
@@ -188,7 +188,7 @@ docker-compose.yml
 
 ### references/
 - `stage-patterns.md` - 常见阶段划分模式
-- `bilingual-comments.md` - 注释格式规范
+注释格式规范已移除，统一使用中文注释
 
 ### assets/
 - `task_plan.md` - 阶段规划模板
