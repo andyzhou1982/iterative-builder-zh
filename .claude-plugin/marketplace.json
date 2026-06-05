@@ -10,7 +10,16 @@
       "name": "iterative-builder-zh",
       "description": "从需求文档循序渐进构建生产级项目。支持分阶段实现、会话恢复和 bug 修复",
       "version": "1.0.0",
-      "source": "./",
+      "repository": "https://github.com/andyzhou1982/iterative-builder-zh",
+      "source": {
+        "source": "github",
+        "repo": "andyzhou1982/iterative-builder-zh",
+        "ref": "main"
+      },
+      "skills": [
+        "./skills/iterative-project-builder-zh",
+        "./skills/code-review-zh"
+      ],
       "author": {
         "name": "Claude User",
         "email": "user@example.com"
