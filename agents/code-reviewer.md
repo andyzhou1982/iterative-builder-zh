@@ -53,9 +53,10 @@ tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 2. `findings.md` - 架构模式和技术选型
 3. `progress.md` - 当前进度和已完成阶段
 
-## 第二步：扫描目标代码
+## 第二步：切换到正确的分支并扫描代码
 
-扫描指定 Day 的目录，识别所有源代码文件。
+1. **检查并切换到目标分支**：`git checkout day<N>`
+2. 扫描当前分支的代码，识别所有源代码文件
 
 排除：
 - 第三方依赖（node_modules/, venv/, vendor/）
@@ -154,7 +155,14 @@ tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 1. 按审查报告逐项修改代码
 2. 修改保持最小化原则
 3. 保持每个 Day 独立可运行
-4. 如有跨阶段影响，列出需要同步修改的 Day
+4. **提交修复**：`git add . && git commit -m "Code review: Day N - 修复问题"`
+
+**跨阶段影响处理**：
+如有跨阶段影响，列出需要同步修改的分支，使用 cherry-pick 同步：
+```bash
+git checkout day3
+git cherry-pick day2
+```
 
 ## 严重程度定义
 

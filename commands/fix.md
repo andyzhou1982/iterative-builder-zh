@@ -94,9 +94,10 @@ Agent 返回修复方案后，展示给用户：
 ✅ **已更新**: progress.md
 
 **建议验证步骤**:
-1. cd day1/backend && python -m py_compile src/*.py
-2. cd day1/frontend && npm run build
-3. [运行相关测试]
+1. git checkout <相关分支>
+2. cd backend && python -m py_compile src/*.py
+3. cd frontend && npm run build
+4. [运行相关测试]
 
 是否立即执行验证？
 ```

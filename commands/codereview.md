@@ -27,10 +27,11 @@ allowed-tools:
 
 1. 如果用户指定了 Day 编号（如 `Day2`），审查该天代码
 2. 如果未指定，从 progress.md 中找到最近完成的 Day
-3. 向用户确认审查范围：
+3. **切换到对应分支**：`git checkout day<N>`
+4. 向用户确认审查范围：
    ```
    将对 Day N: [主题] 进行代码审查
-   目录: dayN/
+   当前分支: day<N>
    ```
 
 ### 第三步：加载审查 Skill
@@ -93,15 +94,17 @@ allowed-tools:
        "question": "以下修改会影响其他阶段，是否同步更新？",
        "header": "跨阶段影响",
        "options": [
-         {"label": "全部同步", "description": "同步修改所有受影响的 Day"},
+         {"label": "全部同步", "description": "将修改 cherry-pick 到所有受影响的分支"},
          {"label": "选择性同步", "description": "逐个确认是否同步每个修改"},
-         {"label": "仅修改当前 Day", "description": "只修改当前 Day，其他后续处理"}
+         {"label": "仅修改当前分支", "description": "只修改当前分支，其他后续处理"}
        ]
      }]
    }
    ```
 
 4. **执行同步修改**（如用户确认）
+   - 提交当前分支的修改
+   - 对每个受影响的分支执行 `git cherry-pick`
 
 ### 第七步：更新规划文件
 

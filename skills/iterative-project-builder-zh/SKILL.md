@@ -15,14 +15,19 @@ description: 从需求文档循序渐进构建生产级项目。适用于：(1) 
     v
 [阶段规划]
     |
+    v
+[Git 仓库初始化]
+    |
 +---+---+
 |   |   |
-Day1 Day2 ... DayN
+day1 day2 ... dayN (分支)
 MVP  +功能  生产级
 |
 v
-每天：独立 + 可运行 + 有文档
+每个分支：独立 + 可运行 + 有提交记录
 ```
+
+**通过 Git 分支管理每个阶段，单一目录结构，无需 dayN 子目录。**
 
 ## 第一阶段：分析需求
 
@@ -63,10 +68,13 @@ v
 
 ### 2.2 阶段独立性规则
 每个阶段必须：
-- 有自己的目录（`day1/`、`day2/`、...）
-- 无需其他阶段即可完整运行
+- 独立的 Git 分支（`day1`、`day2`、...）
+- 切换到该分支后无需其他阶段即可完整运行
 - 包含完整的前端和后端
-- 有自己的 README 和文档
+- 有清晰的提交记录和说明
+
+**查看某阶段代码**：`git checkout day<N>`
+**继续开发某阶段**：`git checkout day<N>` 后在当前分支修改
 
 ### 2.3 记录到 task_plan.md
 ```markdown
@@ -84,9 +92,20 @@ v
 
 ## 第三阶段：实现 Day 1（MVP）
 
-### 3.1 目录结构
+### 3.1 初始化 Git 并创建 day1 分支
+
+```bash
+# 初始化 Git 仓库
+git init
+
+# 创建并切换到 day1 分支
+git checkout -b day1
 ```
-day1/
+
+### 3.2 项目目录结构
+```
+project/
+├── .git/
 ├── backend/
 │   ├── src/
 │   │   ├── main.py
@@ -101,8 +120,11 @@ day1/
 │   │   ├── components/
 │   │   └── api/
 │   └── package.json
-├── readme.md
-└── readme_cn.md
+├── task_plan.md
+├── findings.md
+├── progress.md
+├── README.md
+└── README_CN.md
 ```
 
 ### 3.2 MVP 原则
@@ -114,17 +136,25 @@ day1/
 ### 3.3 验证 Day 1
 ```bash
 # 后端编译检查
-cd day1/backend && python -m py_compile src/*.py
+cd backend && python -m py_compile src/*.py
 
 # 前端构建检查
-cd day1/frontend && npm run build
+cd frontend && npm run build
+
+# 提交 Day 1 代码
+git add .
+git commit -m "Day 1: MVP - 核心功能实现"
 ```
 
 ## 第四阶段：实现后续天数
 
-### 4.1 复制前一天
+### 4.1 基于前一天创建新分支
 ```bash
-cp -r day1 day2
+# 基于 day1 创建 day2 分支
+git checkout -b day2 day1
+
+# 或者基于当前分支（如果你已经在 day1 上）
+git checkout -b day2
 ```
 
 ### 4.2 增量添加功能
@@ -134,8 +164,10 @@ cp -r day1 day2
 - Day 4: 改进生成
 - 等等
 
-### 4.3 记录变更
-为每天创建 `CHANGES.md`：
+### 4.3 双重变更记录
+
+**方式一：CHANGES.md 文件**（人类可读摘要）
+为每天更新 `CHANGES.md`：
 ```markdown
 # Day N 变更
 
@@ -149,11 +181,27 @@ cp -r day1 day2
 - `library`: 用途
 ```
 
+**方式二：Git 提交记录**（技术细节）
+```bash
+git add .
+git commit -m "Day N: <主题>"
+```
+
+**查看某阶段的变更**：
+```bash
+# 通过 Git 查看代码差异
+git diff day1..day2
+
+# 通过 CHANGES.md 查看变更摘要
+cat CHANGES.md
+```
+
 ### 4.4 更新规划文件
 每天完成后：
 1. 更新 `task_plan.md` - 标记完成
 2. 更新 `findings.md` - 记录学习
 3. 更新 `progress.md` - 记录操作
+4. 提交到 Git：`git add task_plan.md findings.md progress.md CHANGES.md && git commit -m "Day N: 更新规划文件"`
 
 ## 第五阶段：最终天（生产级）
 
@@ -200,6 +248,45 @@ docker-compose.yml
 | 任务 | 命令 |
 |------|------|
 | 初始化规划文件 | `python scripts/init_planning.py` |
-| 开始 Day N | 复制 `day(N-1)` 到 `dayN` |
+| 初始化 Git 仓库 | `git init && git checkout -b day1` |
+| 开始 Day N | `git checkout -b day<N> day<N-1>` |
+| 切换到某阶段查看 | `git checkout day<N>` |
+| 查看阶段差异 | `git diff day<N-1>..day<N>` |
 | 验证阶段 | 构建检查 + 手动测试 |
-| 完成阶段 | 更新所有规划文件 |
+| 完成阶段 | 更新规划文件 + `git commit` |
+
+## 分支管理最佳实践
+
+### 分支命名
+- `day1`, `day2`, `day3` ... - 主线阶段分支
+- `day3-experiment-a` - 某阶段的实验性变体
+- `day3-bugfix` - 某阶段的 bug 修复分支
+
+### 跨阶段修复
+如果发现 Day 2 的 bug 需要应用到 Day 3、Day 4：
+
+```bash
+# 在 day2 分支修复 bug
+git checkout day2
+# 修复代码...
+git commit -m "Day 2: 修复 XXX bug"
+
+# Cherry-pick 到后续阶段
+git checkout day3
+git cherry-pick day2
+
+git checkout day4
+git cherry-pick day2
+```
+
+### 查看演进历史
+```bash
+# 查看所有阶段分支
+git branch -a
+
+# 查看某阶段的提交历史
+git log day3 --oneline --graph
+
+# 比较两个阶段的代码差异
+git diff day2..day3 --stat
+```

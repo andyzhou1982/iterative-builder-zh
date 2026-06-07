@@ -56,12 +56,13 @@ tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 3. progress.md - 了解历史会话和已知问题
 ```
 
-## 第二步：定位 Bug
+## 第二步：切换到正确的分支并定位 Bug
 
-1. 根据用户描述，结合规划文件定位可能的代码位置
-2. 使用 Grep/Glob 搜索相关代码
-3. 读取相关文件确认问题
-4. 向用户确认 Bug 具体位置是否正确
+1. **检查当前分支**，确保在正确的 Day 分支上
+2. 根据用户描述，结合规划文件定位可能的代码位置
+3. 使用 Grep/Glob 搜索相关代码
+4. 读取相关文件确认问题
+5. 向用户确认 Bug 具体位置是否正确
 
 ## 第三步：分析影响范围
 
@@ -104,6 +105,17 @@ tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
    # Date: [日期]
    # 修复：[Bug 描述]
    ```
+5. **提交修复**：`git add . && git commit -m "Fix: [Bug 描述]"`
+
+**同步修复到其他分支**（如需要）：
+```bash
+# Cherry-pick 修复到其他受影响的分支
+git checkout day3
+git cherry-pick day2
+
+git checkout day4
+git cherry-pick day2
+```
 
 ## 第五步：更新规划文件
 
@@ -143,8 +155,8 @@ tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ### 影响分析
 | 阶段 | 影响 | 需要操作 |
 |------|------|----------|
-| Day X | 是/否 | [具体操作] |
-| Day Y | 是/否 | [具体操作] |
+| Day X | 是/否 | git cherry-pick 到 dayX |
+| Day Y | 是/否 | git cherry-pick 到 dayY |
 
 ### 后续建议
 - [ ] [建议 1]

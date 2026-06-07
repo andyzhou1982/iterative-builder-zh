@@ -84,20 +84,29 @@ allowed-tools:
 #### 4.1 实现当前 Day
 
 按照 skill 中的方法论实现当前阶段：
-- 复制前一天目录（Day 1 除外）
-- 添加本阶段新功能
-- 确保端到端可用
-- 添加中文注释
+
+**Day 1（首个阶段）**：
+1. 初始化 Git 仓库（如果未初始化）
+2. 创建并切换到 `day1` 分支：`git checkout -b day1`
+3. 实现核心功能
+4. 提交代码：`git add . && git commit -m "Day 1: MVP"`
+
+**Day N+1（后续阶段）**：
+1. 基于前一天创建新分支：`git checkout -b day<N+1> day<N>`
+2. 在新分支上添加本阶段新功能
+3. 确保端到端可用
+4. 添加中文注释
+5. 提交代码：`git add . && git commit -m "Day <N+1>: <主题>"`
 
 #### 4.2 验证当前 Day
 
 完成实现后执行验证：
 ```bash
 # 后端编译检查
-cd dayN/backend && python -m py_compile src/*.py
+cd backend && python -m py_compile src/*.py
 
 # 前端构建检查
-cd dayN/frontend && npm run build
+cd frontend && npm run build
 ```
 
 #### 4.3 更新规划文件
@@ -126,7 +135,7 @@ cd dayN/frontend && npm run build
 ```json
 {
   "subagent_type": "iterative-builder-zh:code-reviewer",
-  "prompt": "请对项目 <项目路径> 的 Day N 进行代码审查。先读取 task_plan.md、findings.md、progress.md 了解项目上下文，然后扫描 dayN/ 目录进行五维度审查。"
+  "prompt": "请对项目 <项目路径> 的 Day N 分支进行代码审查。先读取 task_plan.md、findings.md、progress.md 了解项目上下文，确保在 day<N> 分支上，然后对当前代码进行五维度审查。"
 }
 ```
 

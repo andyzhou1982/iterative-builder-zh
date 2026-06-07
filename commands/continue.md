@@ -87,12 +87,17 @@ allowed-tools:
 
 1. **自动加载 skill** - 激活 `iterative-project-builder-zh` skill
 
-2. **根据当前状态决定下一步**：
+2. **切换到正确的 Git 分支**：
+   - 如果有 in_progress 的阶段 → `git checkout day<N>` （当前工作分支）
+   - 如果需要开始新阶段 → `git checkout -b day<N+1> day<N>` （基于前一天创建新分支）
+   - 如果需要修复某阶段 → `git checkout day<M>` （切换到目标阶段）
+
+3. **根据当前状态决定下一步**：
    - 如果有 in_progress 的阶段 → 继续该阶段
    - 如果所有阶段 complete → 询问用户是否开始下一阶段
    - 如果遇到错误 → 优先解决错误
 
-3. **更新 progress.md** - 记录恢复会话：
+4. **更新 progress.md** - 记录恢复会话：
    ```markdown
    ## 会话: [当前日期]
 
