@@ -2,8 +2,8 @@
   "name": "iterative-builder-zh-marketplace",
   "description": "循序渐进项目构建器插件",
   "owner": {
-    "name": "Claude User",
-    "email": "user@example.com"
+    "name": "andyzhou",
+    "email": "andyzhou1982@163.com"
   },
   "plugins": [
     {
@@ -21,8 +21,8 @@
         "./skills/code-review-zh"
       ],
       "author": {
-        "name": "Claude User",
-        "email": "user@example.com"
+        "name": "andyzhou",
+        "email": "andyzhou1982@163.com"
       }
     }
   ]
