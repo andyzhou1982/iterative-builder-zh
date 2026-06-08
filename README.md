@@ -12,11 +12,30 @@
 
 ## 安装
 
-将此插件目录复制到 Claude Code 插件目录，或使用：
+### 方式一：通过市场安装（推荐）
+
+在 Claude Code 会话内执行：
+
+```
+/plugin marketplace add andyzhou1982/iterative-builder-zh
+```
+
+添加市场后，安装插件：
+
+```
+/plugin install iterative-builder-zh@iterative-builder-zh-marketplace
+```
+
+### 方式二：本地安装
 
 ```bash
-cc --plugin-dir /path/to/iterative-builder-zh
+claude plugin marketplace add /path/to/iterative-builder-zh
 ```
+
+```bash
+claude plugin install iterative-builder-zh@iterative-builder-zh-marketplace
+```
+
 
 ## 命令
 
