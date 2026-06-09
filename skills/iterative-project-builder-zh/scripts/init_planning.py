@@ -6,256 +6,26 @@ Initialize planning files for iterative project
 用法: python init_planning.py [项目名称]
 """
 
-import os
 import sys
 from pathlib import Path
 from datetime import datetime
 
-# Planning file templates / 规划文件模板
-TASK_PLAN_TEMPLATE = '''# 任务计划: {project_name}
-<!--
-  WHAT: {project_name} 的分阶段实施方案
-  WHY: 将复杂系统拆解为可学习的阶段性模块
-  WHEN: 在开始任何工作之前创建，每个阶段完成后更新
--->
 
-## 目标
-<!--
-  目标：创建一个循序渐进的项目，从最小化实现逐步演进到完整系统
--->
-[描述项目目标]
+def get_assets_dir() -> Path:
+    """Get the assets directory path / 获取 assets 目录路径"""
+    # Get the script directory / 获取脚本所在目录
+    script_dir = Path(__file__).parent
+    assets_dir = script_dir.parent / "assets"
+    return assets_dir
 
-## 当前阶段
-阶段 1: 规划完成 - 准备开始 Day 1
 
-## 技术栈决策
-| 组件 | 选择 | 理由 |
-|------|------|------|
-| 后端 | [待定] | [原因] |
-| 前端 | [待定] | [原因] |
-| 数据库 | [待定] | [原因] |
-
-## 阶段概览
-
-### Day 1: [MVP 主题]
-- [ ] [功能 A]
-- [ ] [功能 B]
-- **状态:** pending
-- **目标:** [Day 1 达成什么]
-
-### Day 2: [增强主题]
-- [ ] [功能 C]
-- **状态:** pending
-- **目标:** [Day 2 添加什么]
-
-### Day 3: [增强主题]
-- [ ] [功能 D]
-- **状态:** pending
-- **目标:** [Day 3 添加什么]
-
-### Day N: 生产就绪
-- [ ] 性能优化
-- [ ] Docker 部署
-- [ ] 完整文档
-- **状态:** pending
-- **目标:** 生产部署就绪
-
-## 关键问题
-1. 技术栈选择？
-2. 每个阶段的验收标准？
-3. 如何确保每个阶段独立可运行？
-
-## 已做决策
-| 决策 | 理由 |
-|------|------|
-| (待填写) | - |
-
-## 遇到的错误
-| 错误 | 尝试 | 解决方案 |
-|------|------|----------|
-| (待填写) | - | - |
-
-## 备注
-- 每个阶段必须独立可运行
-- 所有代码注释使用中文
-- 每个阶段后验证端到端功能
-'''
-
-FINDINGS_TEMPLATE = '''# 研究发现与决策
-<!--
-  WHAT: {project_name} 的研究发现和技术决策记录
-  WHY: 持久化存储关键信息，防止上下文丢失
-  WHEN: 每次有新发现时更新
--->
-
-## 需求摘要
-<!--
-  从需求文档提取的核心需求
--->
-- 核心需求 1
-- 核心需求 2
-- 核心需求 3
-
-## 技术栈详情
-
-### 后端
-| 组件 | 库 | 用途 |
-|------|------|------|
-| [组件] | [库] | [用途] |
-
-### 前端
-| 组件 | 库 | 用途 |
-|------|------|------|
-| [组件] | [库] | [用途] |
-
-## 研究发现
-
-### 核心架构
-```
-┌─────────────┐
-│   前端      │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│   后端      │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│   数据库    │
-└─────────────┘
-```
-
-### 关键模式
-1. 模式 A: 描述
-2. 模式 B: 描述
-
-## 技术决策
-| 决策 | 理由 |
-|------|------|
-| | |
-
-## 实现模式
-
-### 中文注释格式
-```python
-# 中文注释
-code here
-```
-
-### API 响应格式
-```json
-{{
-  "success": true,
-  "data": {{}},
-  "error": null
-}}
-```
-
-## 资源
-- [资源 1](url)
-- [资源 2](url)
-
-## 遇到的问题
-| 问题 | 解决方案 |
-|------|----------|
-| | |
-
-## Day X 研究: [主题]
-/*
-  Day X 研究：[主题]
-  Updated: [日期]
-*/
-### 关键组件
-1. **组件 A**
-   - 详情
-2. **组件 B**
-   - 详情
-
-### 配置
-```python
-# 配置示例
-```
-'''
-
-PROGRESS_TEMPLATE = '''# 进度日志
-<!--
-  WHAT: {project_name} 的进度日志
-  WHY: 记录每个阶段的详细进展
-  WHEN: 每个阶段完成或有重要进展时更新
--->
-
-## 会话: [日期]
-
-### 阶段 1: 规划
-- **状态:** complete
-- **开始:** [日期]
-- 执行操作:
-  - 读取 requirement.md
-  - 创建规划文件
-  - 提出技术栈建议
-- 创建/修改文件:
-  - task_plan.md
-  - findings.md
-  - progress.md
-
-### 阶段 2: Day 1 实现
-- **状态:** [pending/in_progress/complete]
-- **开始:** [日期]
-- 执行操作:
-  - [操作 1]
-  - [操作 2]
-- 创建/修改文件:
-  - [文件 1]
-  - [文件 2]
-
-### 阶段 3: Day 2 实现
-- **状态:** pending
-- **开始:** [日期]
-- 执行操作:
-  - [操作]
-- 创建/修改文件:
-  - [文件]
-
-## 每日进度计划
-
-| 天数 | 计划 | 状态 | 关键交付物 |
-|------|------|------|------------|
-| Day 1 | MVP | pending | 核心功能 |
-| Day 2 | 增强 | pending | 新功能 |
-| Day N | 生产 | pending | 完整系统 |
-
-## 测试结果
-
-| 测试 | 输入 | 预期 | 实际 | 状态 |
-|------|------|------|------|------|
-| 测试 1 | 输入 | 预期 | 实际 | 通过/失败 |
-
-## 错误日志
-
-| 时间戳 | 错误 | 尝试 | 解决方案 |
-|--------|------|------|----------|
-| | | | |
-
-## 5 问重启检查
-
-| 问题 | 答案 |
-|------|------|
-| 我在哪？ | [当前阶段] |
-| 我要去哪？ | [后续阶段] |
-| 目标是什么？ | [项目目标] |
-| 我学到了什么？ | [关键学习] |
-| 我做了什么？ | [已完成工作] |
-
-## 下一步行动
-
-1. [行动 1]
-2. [行动 2]
-
----
-*每个阶段完成或遇到错误后更新*
-'''
+def load_template(template_name: str) -> str:
+    """Load template from assets directory / 从 assets 目录加载模板"""
+    assets_dir = get_assets_dir()
+    template_file = assets_dir / template_name
+    if not template_file.exists():
+        raise FileNotFoundError(f"Template not found / 模板文件不存在: {template_file}")
+    return template_file.read_text(encoding='utf-8')
 
 
 def create_planning_files(project_name: str, output_dir: Path):
@@ -263,11 +33,16 @@ def create_planning_files(project_name: str, output_dir: Path):
     """在项目目录中创建规划文件"""
     date = datetime.now().strftime("%Y-%m-%d")
 
+    # Load templates from assets directory / 从 assets 目录加载模板
+    task_plan_template = load_template("task_plan.md")
+    findings_template = load_template("findings.md")
+    progress_template = load_template("progress.md")
+
     # Create planning files / 创建规划文件
     files = {
-        "task_plan.md": TASK_PLAN_TEMPLATE.format(project_name=project_name),
-        "findings.md": FINDINGS_TEMPLATE.format(project_name=project_name),
-        "progress.md": PROGRESS_TEMPLATE.format(
+        "task_plan.md": task_plan_template.format(project_name=project_name),
+        "findings.md": findings_template.format(project_name=project_name),
+        "progress.md": progress_template.format(
             project_name=project_name,
             date=date
         )
